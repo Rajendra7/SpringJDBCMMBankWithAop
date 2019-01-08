@@ -15,7 +15,6 @@ import com.cg.app.account.SortAccountByBalanceInDescending;
 import com.cg.app.account.SortAccountByHolderNameInAscending;
 import com.cg.app.account.SortAccountByHolderNameInDescending;
 import com.cg.app.account.service.SavingsAccountService;
-import com.cg.app.account.util.DBUtil;
 import com.cg.app.exception.AccountNotFoundException;
 
 @Component
@@ -104,11 +103,6 @@ public class AccountCUI {
 			sortAccounts();
 			break;
 		case 11:
-			try {
-				DBUtil.closeConnection();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 			System.exit(0);
 			break;
 		default:
@@ -441,17 +435,7 @@ private  void selectOptionsToUpdate(int select, SavingsAccount savingsAccount2) 
 
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
-			try {
-				DBUtil.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
 		} catch (Exception e) {
-			try {
-				DBUtil.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
 		}
 	}
 
@@ -465,21 +449,11 @@ private  void selectOptionsToUpdate(int select, SavingsAccount savingsAccount2) 
 			savingsAccount = savingsAccountService
 					.getAccountById(accountNumber);
 			savingsAccountService.withdraw(savingsAccount, amount);
-			DBUtil.commit();
+			
 		} catch (ClassNotFoundException | SQLException
 				| AccountNotFoundException e) {
-			try {
-				DBUtil.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
 			e.printStackTrace();
 		} catch (Exception e) {
-			try {
-				DBUtil.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
 		}
 	}
 
